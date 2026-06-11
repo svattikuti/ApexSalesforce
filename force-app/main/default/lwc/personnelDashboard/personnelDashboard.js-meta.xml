@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>61.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Personnel Dashboard</masterLabel>
+    <description>Learning component that shows personnel data with wired Apex reads and imperative Apex writes.</description>
+    <targets>
+        <target>lightning__AppPage</target>
+        <target>lightning__HomePage</target>
+        <target>lightning__RecordPage</target>
+    </targets>
+    <targetConfigs>
+        <targetConfig targets="lightning__AppPage,lightning__HomePage,lightning__RecordPage">
+            <property
+                name="defaultDepartment"
+                type="String"
+                label="Default Department"
+                description="Use All, Operations, Engineering, Sales, Human Resources, Finance, Security, or Support."
+                default="All"/>
+        </targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

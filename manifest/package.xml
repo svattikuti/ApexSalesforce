@@ -9,6 +9,10 @@
         <name>ApexTrigger</name>
     </types>
     <types>
+        <members>personnelDashboard</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
         <members>Personnel__c</members>
         <members>Personnel_Assignment__c</members>
         <name>CustomObject</name>

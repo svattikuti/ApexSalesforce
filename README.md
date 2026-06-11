@@ -10,9 +10,11 @@ Use the walkthrough before reading files randomly:
 
 - [Markdown walkthrough](docs/personnel-tracker-walkthrough.md)
 - [HTML walkthrough](docs/personnel-tracker-walkthrough.html)
+- [Lightning UI walkthrough](docs/lightning-ui-walkthrough.md)
+- [Lightning UI walkthrough HTML](docs/lightning-ui-walkthrough.html)
 - [Short learning path](docs/learning-path.md)
 
-The walkthrough explains what to deploy, what to run, which files to read, and what changes to try. It also maps familiar TypeScript/Python ideas to Apex concepts such as selectors, services, triggers, DML, SOQL, and Batch Apex.
+The walkthrough explains what to deploy, what to run, which files to read, and what changes to try. It also maps familiar TypeScript/Python ideas to Apex concepts such as selectors, services, triggers, DML, SOQL, Batch Apex, and Lightning Web Components.
 
 ## What You Will Learn
 
@@ -20,6 +22,7 @@ The walkthrough explains what to deploy, what to run, which files to read, and w
 - Custom metadata: objects, fields, formulas, validation rules, and permission sets.
 - Apex basics: sObjects, SOQL, DML, exceptions, static methods, and inner classes.
 - Apex architecture: selector, service, trigger handler, one thin trigger, and batch processing.
+- Lightning UI development: LWC component bundles, wired Apex reads, imperative Apex writes, and Lightning App Builder exposure.
 - Bulk-safe thinking: methods accept lists/sets and tests include a 200-record path.
 - Tests: `@IsTest`, factories, positive tests, negative tests, async tests, and assertions.
 
@@ -42,9 +45,11 @@ sf apex run test --class-names PersonnelServiceTest --result-format human --wait
 | `force-app/main/default/classes/PersonnelSelector.cls` | SOQL read layer, similar to a repository in other stacks. |
 | `force-app/main/default/classes/PersonnelService.cls` | Personnel business operations: upsert, query, summarize, terminate. |
 | `force-app/main/default/classes/PersonnelAssignmentService.cls` | Assignment creation and closeout behavior. |
+| `force-app/main/default/classes/PersonnelDashboardController.cls` | UI-facing Apex controller for the Lightning Web Component. |
 | `force-app/main/default/classes/PersonnelTriggerHandler.cls` | Trigger lifecycle rules and normalization. |
 | `force-app/main/default/triggers/PersonnelTrigger.trigger` | Thin trigger that delegates to the handler. |
 | `force-app/main/default/classes/PersonnelReviewBatch.cls` | Batch and schedulable Apex example. |
+| `force-app/main/default/lwc/personnelDashboard` | Lightning Web Component dashboard example. |
 | `force-app/main/default/classes/*Test.cls` | Behavior-focused Apex tests. |
 | `scripts/apex` | Anonymous Apex scripts you can run from VS Code or the Salesforce CLI. |
 | `data/personnel-sample.csv` | Optional CSV seed data for bulk upsert practice. |
@@ -88,6 +93,21 @@ sf apex run --file scripts/apex/03_create_assignments.apex
 sf apex run --file scripts/apex/05_run_review_batch.apex
 ```
 
+## Try The Lightning UI
+
+Deploy the source and seed records:
+
+```bash
+sf project deploy start --source-dir force-app
+sf org assign permset --name Personnel_Sample_Admin
+sf apex run --file scripts/apex/01_insert_sample_personnel.apex
+sf apex run --file scripts/apex/03_create_assignments.apex
+```
+
+In Salesforce Setup, open Lightning App Builder, create an App Page, and drag the custom `Personnel Dashboard` component onto the page.
+
+Read [docs/lightning-ui-walkthrough.md](docs/lightning-ui-walkthrough.md) for the full UI lesson.
+
 From VS Code:
 
 1. Open a file in `scripts/apex`.
@@ -104,7 +124,7 @@ sf data upsert bulk --sobject Personnel__c --file data/personnel-sample.csv --ex
 
 ```bash
 sf apex run test \
-  --class-names PersonnelServiceTest,PersonnelTriggerHandlerTest,PersonnelAssignmentServiceTest,PersonnelReviewBatchTest \
+  --class-names PersonnelServiceTest,PersonnelTriggerHandlerTest,PersonnelAssignmentServiceTest,PersonnelReviewBatchTest,PersonnelDashboardControllerTest \
   --result-format human \
   --code-coverage \
   --wait 10
@@ -128,4 +148,6 @@ Salesforce requires at least 75% Apex coverage for deployment, but that is only 
 - [Trailhead: Apex Triggers](https://trailhead.salesforce.com/content/learn/modules/apex_triggers)
 - [Trailhead: Apex Testing](https://trailhead.salesforce.com/content/learn/modules/apex_testing)
 - [Trailhead: Asynchronous Apex](https://trailhead.salesforce.com/content/learn/modules/asynchronous_apex)
+- [Lightning Web Components Developer Guide](https://developer.salesforce.com/docs/platform/lwc/guide)
+- [LWC: Call Apex Methods](https://developer.salesforce.com/docs/platform/lwc/guide/apex.html)
 - [Apex Recipes](https://github.com/trailheadapps/apex-recipes)

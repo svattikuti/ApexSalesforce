@@ -11,6 +11,7 @@ Use this order:
 5. Run the tests.
 6. Run Batch Apex.
 7. Make one guided change.
+8. Add a Lightning Web Component UI.
 
 ## Mental Model
 
@@ -34,6 +35,7 @@ If you come from TypeScript or Python, map the files this way:
 | Background job | `PersonnelReviewBatch.cls` |
 | Fixtures/factories | `PersonnelTestDataFactory.cls` |
 | Small REPL scripts | `scripts/apex/*.apex` |
+| Salesforce UI component | `lwc/personnelDashboard` |
 
 ## Setup Checkpoint
 
@@ -304,6 +306,31 @@ What to notice:
 - It deletes assignments before deleting personnel.
 - It only targets sample IDs with `SAMPLE-%` or `BULK-%`.
 - Cleanup scripts should be narrow and obvious.
+
+## Walkthrough 9: Lightning UI
+
+Read:
+
+- `docs/lightning-ui-walkthrough.md`
+- `force-app/main/default/lwc/personnelDashboard/personnelDashboard.html`
+- `force-app/main/default/lwc/personnelDashboard/personnelDashboard.js`
+- `force-app/main/default/classes/PersonnelDashboardController.cls`
+
+What to notice:
+
+- The LWC uses `@wire` to read cacheable dashboard data.
+- The LWC uses imperative Apex to create assignments from a button click.
+- The Apex controller returns UI-friendly DTOs instead of raw domain internals.
+- The `.js-meta.xml` file exposes the component to Lightning App Builder.
+
+Run:
+
+```bash
+sf project deploy start --source-dir force-app
+sf apex run test --class-names PersonnelDashboardControllerTest --result-format human --wait 10
+```
+
+Then add `Personnel Dashboard` to a Lightning App Page in Lightning App Builder.
 
 ## Common Apex Terms
 

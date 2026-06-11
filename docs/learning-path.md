@@ -133,7 +133,31 @@ Try:
 - Change the review thresholds from 300/365 days to your preferred policy.
 - Update `calculateReviewStatus_returnsExpectedValues` first, watch it fail, then update the batch class.
 
-## 8. Add Quality Tooling Later
+## 8. Add A Lightning UI
+
+Read:
+
+- `docs/lightning-ui-walkthrough.md`
+- `force-app/main/default/lwc/personnelDashboard/personnelDashboard.html`
+- `force-app/main/default/lwc/personnelDashboard/personnelDashboard.js`
+- `force-app/main/default/classes/PersonnelDashboardController.cls`
+
+Run:
+
+```bash
+sf project deploy start --source-dir force-app
+sf apex run --file scripts/apex/01_insert_sample_personnel.apex
+sf apex run --file scripts/apex/03_create_assignments.apex
+sf apex run test --class-names PersonnelDashboardControllerTest --result-format human --wait 10
+```
+
+Try:
+
+- Add the `Personnel Dashboard` component to a Lightning App Page.
+- Change the default department property in Lightning App Builder.
+- Add a client-side review-status filter.
+
+## 9. Add Quality Tooling Later
 
 Once the sample deploys and tests pass, add one quality tool at a time:
 

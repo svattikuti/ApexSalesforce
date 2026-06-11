@@ -1,0 +1,155 @@
+<template>
+    <lightning-card title="Personnel Dashboard" icon-name="standard:people">
+        <div class="slds-p-around_medium dashboard">
+            <div class="toolbar slds-grid slds-wrap slds-gutters slds-grid_vertical-align-end">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                    <lightning-combobox
+                        name="department"
+                        label="Department"
+                        value={selectedDepartment}
+                        options={departmentOptions}
+                        onchange={handleDepartmentChange}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 toolbar-actions">
+                    <lightning-button
+                        label="Refresh"
+                        icon-name="utility:refresh"
+                        onclick={handleRefresh}
+                        disabled={isLoading}>
+                    </lightning-button>
+                </div>
+            </div>
+
+            <template lwc:if={errorMessage}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-top_medium" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>{errorMessage}</h2>
+                </div>
+            </template>
+
+            <template lwc:if={isLoading}>
+                <lightning-spinner alternative-text="Loading personnel dashboard" size="small"></lightning-spinner>
+            </template>
+
+            <template lwc:if={dashboard}>
+                <section class="metrics slds-grid slds-wrap slds-gutters slds-m-top_medium" aria-label="Personnel metrics">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <div class="metric">
+                            <div class="metric-label">Active Personnel</div>
+                            <div class="metric-value">{activePersonnelCount}</div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <div class="metric">
+                            <div class="metric-label">Overdue Reviews</div>
+                            <div class="metric-value warning">{overdueReviewCount}</div>
+                        </div>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                        <div class="metric">
+                            <div class="metric-label">Active Assignments</div>
+                            <div class="metric-value">{activeAssignmentCount}</div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="slds-m-top_large" aria-labelledby="headcount-heading">
+                    <h2 id="headcount-heading" class="section-heading">Headcount by Department</h2>
+                    <div class="headcount-list">
+                        <template for:each={headcountRows} for:item="row">
+                            <span key={row.department} class="headcount-pill">
+                                {row.department}: {row.activePersonnel}
+                            </span>
+                        </template>
+                    </div>
+                </section>
+
+                <section class="slds-m-top_large" aria-labelledby="personnel-heading">
+                    <h2 id="personnel-heading" class="section-heading">Active Personnel</h2>
+                    <lightning-datatable
+                        key-field="id"
+                        data={personnelRows}
+                        columns={personnelColumns}
+                        max-row-selection="1"
+                        onrowselection={handlePersonnelSelection}>
+                    </lightning-datatable>
+                </section>
+
+                <section class="slds-m-top_large assignment-panel" aria-labelledby="assignment-heading">
+                    <h2 id="assignment-heading" class="section-heading">Create Assignment</h2>
+                    <p class="slds-text-body_small slds-m-bottom_small">
+                        Select one personnel row, enter assignment details, and save with an imperative Apex call.
+                    </p>
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <lightning-input
+                                label="Selected Personnel"
+                                value={selectedPersonnelLabel}
+                                disabled>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <lightning-input
+                                name="assignmentName"
+                                label="Assignment Name"
+                                value={assignmentName}
+                                onchange={handleAssignmentNameChange}
+                                required>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                            <lightning-combobox
+                                name="assignmentType"
+                                label="Assignment Type"
+                                value={assignmentType}
+                                options={assignmentTypeOptions}
+                                onchange={handleAssignmentTypeChange}>
+                            </lightning-combobox>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-top_small">
+                            <lightning-input
+                                name="startDate"
+                                type="date"
+                                label="Start Date"
+                                value={assignmentStartDate}
+                                onchange={handleStartDateChange}
+                                required>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-top_small">
+                            <lightning-input
+                                name="hoursPerWeek"
+                                type="number"
+                                label="Hours Per Week"
+                                value={hoursPerWeek}
+                                min="1"
+                                max="40"
+                                onchange={handleHoursChange}>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3 slds-m-top_large">
+                            <lightning-button
+                                label="Create Assignment"
+                                variant="brand"
+                                icon-name="utility:add"
+                                onclick={handleCreateAssignment}
+                                disabled={createAssignmentDisabled}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="slds-m-top_large" aria-labelledby="assignment-list-heading">
+                    <h2 id="assignment-list-heading" class="section-heading">Active Assignments</h2>
+                    <lightning-datatable
+                        key-field="id"
+                        data={assignmentRows}
+                        columns={assignmentColumns}
+                        hide-checkbox-column>
+                    </lightning-datatable>
+                </section>
+            </template>
+        </div>
+    </lightning-card>
+</template>

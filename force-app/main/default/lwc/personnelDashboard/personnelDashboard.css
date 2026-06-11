@@ -1,0 +1,61 @@
+.dashboard {
+    position: relative;
+}
+
+.toolbar-actions {
+    display: flex;
+    align-items: end;
+    min-height: 4.25rem;
+}
+
+.section-heading {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.5rem;
+}
+
+.metric {
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    padding: 0.875rem;
+    background: #ffffff;
+    min-height: 5rem;
+}
+
+.metric-label {
+    color: #5f6a7d;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0;
+}
+
+.metric-value {
+    color: #17324d;
+    font-size: 1.75rem;
+    font-weight: 700;
+    line-height: 1.2;
+}
+
+.metric-value.warning {
+    color: #b25c00;
+}
+
+.headcount-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.headcount-pill {
+    border: 1px solid #c9d6e4;
+    border-radius: 999px;
+    padding: 0.25rem 0.625rem;
+    background: #f7f9fc;
+    font-size: 0.8125rem;
+}
+
+.assignment-panel {
+    border-top: 1px solid #d8dde6;
+    padding-top: 1rem;
+}
