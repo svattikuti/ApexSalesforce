@@ -1,0 +1,4 @@
+Employee_Id__c,First_Name__c,Last_Name__c,Email__c,Department__c,Role__c,Status__c,Employment_Type__c,Hire_Date__c,Clearance_Level__c,Work_Location__c,Last_Review_Date__c,Review_Status__c
+CSV-001,Margaret,Hamilton,margaret.hamilton@example.com,Engineering,Software Lead,Active,Full Time,2021-02-01,Secret,Remote,2026-04-30,Current
+CSV-002,Dorothy,Vaughan,dorothy.vaughan@example.com,Operations,Team Supervisor,Active,Full Time,2020-06-15,Confidential,HQ,2025-08-01,Due Soon
+CSV-003,Mary,Jackson,mary.jackson@example.com,Support,Technical Specialist,Active,Contractor,2023-09-12,None,Field Office,2025-05-15,Overdue

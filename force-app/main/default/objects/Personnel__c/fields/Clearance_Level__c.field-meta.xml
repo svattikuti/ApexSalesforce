@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Clearance_Level__c</fullName>
+    <description>Sample-only clearance category. Replace with your real classification model before production use.</description>
+    <label>Clearance Level</label>
+    <required>false</required>
+    <trackHistory>true</trackHistory>
+    <type>Picklist</type>
+    <valueSet>
+        <restricted>true</restricted>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>None</fullName>
+                <default>true</default>
+                <label>None</label>
+            </value>
+            <value>
+                <fullName>Confidential</fullName>
+                <default>false</default>
+                <label>Confidential</label>
+            </value>
+            <value>
+                <fullName>Secret</fullName>
+                <default>false</default>
+                <label>Secret</label>
+            </value>
+            <value>
+                <fullName>Top Secret</fullName>
+                <default>false</default>
+                <label>Top Secret</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Active__c</fullName>
+    <formula>AND(ISPICKVAL(Status__c, &quot;Active&quot;), OR(ISBLANK(End_Date__c), End_Date__c &gt;= TODAY()))</formula>
+    <formulaTreatBlanksAs>BlankAsBlank</formulaTreatBlanksAs>
+    <label>Active</label>
+    <type>Checkbox</type>
+</CustomField>
