@@ -1,3 +1,7 @@
+// Walkthrough 4: Create child records through a service.
+// Run 01_insert_sample_personnel.apex first so SAMPLE records exist.
+
+// Bulk path: one assignment for every active Engineering person.
 List<Personnel_Assignment__c> engineeringAssignments =
     PersonnelAssignmentService.createAssignmentForDepartment(
         'Engineering',
@@ -9,6 +13,7 @@ List<Personnel_Assignment__c> engineeringAssignments =
 
 System.debug('Created Engineering assignments: ' + engineeringAssignments.size());
 
+// Single-record path: query one person, then create one assignment.
 Personnel__c operationsLead = [
     SELECT Id, Display_Name__c
     FROM Personnel__c

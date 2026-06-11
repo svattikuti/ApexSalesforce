@@ -1,4 +1,6 @@
 public with sharing class PersonnelTriggerHandler {
+    // Trigger handlers keep trigger files small. Each public method maps to one
+    // trigger context, which makes behavior easier to test.
     public static void beforeInsert(List<Personnel__c> newRecords) {
         normalize(newRecords);
         enforceTerminationDates(newRecords);
@@ -19,6 +21,7 @@ public with sharing class PersonnelTriggerHandler {
     private static void enforceTerminationDates(List<Personnel__c> records) {
         for (Personnel__c person : records) {
             if (person.Status__c == 'Terminated' && person.Termination_Date__c == null) {
+                // addError blocks the save in the current transaction.
                 person.addError('Termination Date is required when Status is Terminated.');
             }
         }

@@ -4,6 +4,16 @@ This is a Salesforce DX learning project for tracking personnel data in Salesfor
 
 The project is intentionally heavier than a snippet collection because it is meant for someone who already knows TypeScript or Python and wants to learn how Apex projects are organized in VS Code.
 
+## Start Here
+
+Use the walkthrough before reading files randomly:
+
+- [Markdown walkthrough](docs/personnel-tracker-walkthrough.md)
+- [HTML walkthrough](docs/personnel-tracker-walkthrough.html)
+- [Short learning path](docs/learning-path.md)
+
+The walkthrough explains what to deploy, what to run, which files to read, and what changes to try. It also maps familiar TypeScript/Python ideas to Apex concepts such as selectors, services, triggers, DML, SOQL, and Batch Apex.
+
 ## What You Will Learn
 
 - Salesforce DX project layout: `force-app`, `config`, `manifest`, `scripts/apex`, and `.vscode`.
@@ -12,6 +22,16 @@ The project is intentionally heavier than a snippet collection because it is mea
 - Apex architecture: selector, service, trigger handler, one thin trigger, and batch processing.
 - Bulk-safe thinking: methods accept lists/sets and tests include a 200-record path.
 - Tests: `@IsTest`, factories, positive tests, negative tests, async tests, and assertions.
+
+## Editor Choice
+
+VS Code with the Salesforce Extension Pack is the official Salesforce-documented editor path. Cursor can also open and edit this repository because it uses a VS Code-style workspace, but the Salesforce CLI commands are the source of truth:
+
+```bash
+sf project deploy start --source-dir force-app
+sf apex run --file scripts/apex/01_insert_sample_personnel.apex
+sf apex run test --class-names PersonnelServiceTest --result-format human --wait 10
+```
 
 ## Project Map
 

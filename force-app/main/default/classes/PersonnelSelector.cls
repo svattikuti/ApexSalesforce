@@ -1,4 +1,6 @@
 public with sharing class PersonnelSelector {
+    // Selector classes centralize SOQL. That keeps services focused on business
+    // intent and makes it easier to audit where database reads happen.
     public static List<Personnel__c> selectByIds(Set<Id> personnelIds) {
         if (personnelIds == null || personnelIds.isEmpty()) {
             return new List<Personnel__c>();
@@ -36,6 +38,8 @@ public with sharing class PersonnelSelector {
             return new List<Personnel__c>();
         }
 
+        // Apex does not have a built-in ORM query builder. A simple branch is
+        // often clearer than dynamic SOQL when only one filter changes.
         if (activeOnly == true) {
             return [
                 SELECT Id, Name, Employee_Id__c, First_Name__c, Last_Name__c, Display_Name__c,
@@ -61,6 +65,8 @@ public with sharing class PersonnelSelector {
     }
 
     public static Map<Id, Personnel__c> mapById(Set<Id> personnelIds) {
+        // A Map is the Apex equivalent of a dictionary keyed by record Id.
+        // It is the usual way to avoid nested loops and repeated queries.
         return new Map<Id, Personnel__c>(selectByIds(personnelIds));
     }
 }

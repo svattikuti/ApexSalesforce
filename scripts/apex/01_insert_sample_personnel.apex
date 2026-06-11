@@ -1,3 +1,10 @@
+// Walkthrough 2: Anonymous Apex as a REPL.
+// Run with:
+// sf apex run --file scripts/apex/01_insert_sample_personnel.apex
+//
+// This script creates records in memory, then sends the whole list through the
+// service layer. Running it twice should update the same Employee IDs instead
+// of creating duplicates.
 List<Personnel__c> people = new List<Personnel__c>{
     new Personnel__c(
         Employee_Id__c = 'SAMPLE-001',
@@ -43,8 +50,11 @@ List<Personnel__c> people = new List<Personnel__c>{
     )
 };
 
+// The service method normalizes fields, queries existing Employee IDs once,
+// then performs one bulk upsert.
 List<Database.UpsertResult> results = PersonnelService.upsertPersonnel(people);
 
+// System.debug output appears in the command output or Apex logs.
 for (Integer i = 0; i < results.size(); i++) {
     Database.UpsertResult result = results[i];
     System.debug(

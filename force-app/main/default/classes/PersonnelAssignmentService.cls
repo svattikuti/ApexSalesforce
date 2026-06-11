@@ -2,6 +2,8 @@ public with sharing class PersonnelAssignmentService {
     public class AssignmentException extends Exception {
     }
 
+    // Single-record convenience method. It still uses the selector so the
+    // validation path matches the bulk department method below.
     public static Personnel_Assignment__c createAssignment(
         Id personnelId,
         String assignmentName,
@@ -37,6 +39,7 @@ public with sharing class PersonnelAssignmentService {
         );
         insert assignment;
 
+        // Re-query after insert to return formula fields such as Active__c.
         return [
             SELECT Id, Name, Personnel__c, Assignment_Name__c, Assignment_Type__c,
                 Status__c, Start_Date__c, End_Date__c, Hours_Per_Week__c, Active__c
@@ -57,6 +60,7 @@ public with sharing class PersonnelAssignmentService {
             throw new AssignmentException('Department is required.');
         }
 
+        // Bulk insert example: create all child records in memory, then insert once.
         List<Personnel_Assignment__c> assignments = new List<Personnel_Assignment__c>();
         for (Personnel__c person : PersonnelService.findActiveByDepartment(new Set<String>{ department })) {
             assignments.add(
@@ -85,6 +89,7 @@ public with sharing class PersonnelAssignmentService {
             throw new AssignmentException('End Date is required.');
         }
 
+        // Query all open assignments in one SOQL call and update as a collection.
         List<Personnel_Assignment__c> assignmentsToUpdate = new List<Personnel_Assignment__c>();
         for (Personnel_Assignment__c assignment : [
             SELECT Id, Start_Date__c, End_Date__c, Status__c
@@ -92,6 +97,8 @@ public with sharing class PersonnelAssignmentService {
             WHERE Personnel__c IN :personnelIds
                 AND Status__c IN ('Planned', 'Active')
         ]) {
+            // Future assignments have not started, so cancellation is more accurate
+            // than completion and avoids violating the end-before-start rule.
             if (assignment.Start_Date__c != null && assignment.Start_Date__c > endDate) {
                 assignment.Status__c = 'Cancelled';
                 assignment.End_Date__c = null;

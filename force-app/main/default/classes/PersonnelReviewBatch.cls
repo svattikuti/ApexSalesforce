@@ -1,5 +1,7 @@
 public with sharing class PersonnelReviewBatch implements Database.Batchable<SObject>, Schedulable {
     public Database.QueryLocator start(Database.BatchableContext context) {
+        // start defines the full record set. Salesforce splits it into chunks
+        // before calling execute.
         return Database.getQueryLocator([
             SELECT Id, Last_Review_Date__c, Review_Status__c
             FROM Personnel__c
@@ -8,6 +10,8 @@ public with sharing class PersonnelReviewBatch implements Database.Batchable<SOb
     }
 
     public void execute(Database.BatchableContext context, List<SObject> scope) {
+        // execute handles one chunk. Keep it bulk-safe for the same reason
+        // triggers must be bulk-safe.
         List<Personnel__c> updates = new List<Personnel__c>();
         Date today = Date.today();
 
@@ -25,9 +29,13 @@ public with sharing class PersonnelReviewBatch implements Database.Batchable<SOb
     }
 
     public void finish(Database.BatchableContext context) {
+        // Empty for now. In a real org this might publish a platform event,
+        // write an audit record, or notify an admin.
     }
 
     public void execute(SchedulableContext context) {
+        // The same class can be scheduled. The scheduled execution simply starts
+        // the batch job with a conservative scope size.
         Database.executeBatch(new PersonnelReviewBatch(), 100);
     }
 
