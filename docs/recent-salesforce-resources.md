@@ -29,6 +29,19 @@ Dates below were checked on 2026-06-11.
 | [trailheadapps/lwc-recipes](https://github.com/trailheadapps/lwc-recipes) | GitHub API showed pushed `2026-06-03` and updated `2026-06-11`. | Use after the dashboard walkthrough to compare more LWC examples, especially wire adapters, Jest tests, and Apex calls. |
 | [trailheadapps/ebikes-lwc](https://github.com/trailheadapps/ebikes-lwc) | GitHub API showed pushed `2026-06-03` and updated `2026-06-07`. | Use when you want a larger app-shaped example after the guided personnel sample feels clear. |
 
+## Udemy Search Links To Check
+
+Udemy can be useful for extra walkthrough-style practice, but it is not an official Salesforce source and course catalogs change frequently. These links were checked on 2026-06-11 and returned live Udemy search pages. Use them as starting points, then evaluate individual courses before enrolling.
+
+| Search | Checked signal | What to look for |
+| --- | --- | --- |
+| [Salesforce Apex developer](https://www.udemy.com/courses/search/?q=salesforce%20apex%20developer) | Search page returned HTTP 200 on 2026-06-11. | Recent update date, hands-on Apex classes, tests, triggers, SOQL, and Salesforce CLI or VS Code/Cursor workflow. |
+| [Salesforce SOQL](https://www.udemy.com/courses/search/?q=salesforce%20soql) | Search page returned HTTP 200 on 2026-06-11. | Query practice with relationship queries, aggregate queries, bind variables, and bulk-safe selector patterns. |
+| [Salesforce Lightning Web Components](https://www.udemy.com/courses/search/?q=salesforce%20lightning%20web%20components) | Search page returned HTTP 200 on 2026-06-11. | Modern LWC examples with explicit API versions, `@wire`, imperative Apex, Jest tests, and current Salesforce DX commands. |
+| [Salesforce Platform Developer I](https://www.udemy.com/courses/search/?q=salesforce%20platform%20developer%20I) | Search page returned HTTP 200 on 2026-06-11. | Exam prep that still teaches buildable skills: Apex fundamentals, governor limits, data modeling, testing, and deployment. |
+
+When comparing Udemy courses, prefer courses updated in the last 12 to 18 months, with preview lessons that show current Salesforce CLI commands and Lightning Web Components rather than older Aura-only workflows. Treat Trailhead and developer.salesforce.com as the authority when course content conflicts with platform docs.
+
 ## How These Resources Changed This Repo
 
 - Added `docs/soql-guide.md` and `docs/soql-guide.html` so SOQL has its own learning path instead of being hidden inside selectors.
@@ -37,4 +50,5 @@ Dates below were checked on 2026-06-11.
 - Kept `PersonnelSelector.cls` as the main query layer because the selector pattern helps new developers see where SOQL belongs.
 - Called out LWC API versioning because modern custom components must declare an API version when changed.
 - Added a Dreamforce fortification backlog that prioritizes security, LWC testing, agent-ready action contracts, skills modeling, async callouts, Code Analyzer, and release-readiness.
+- Added Udemy search links as optional paid-learning entry points, with a checklist for avoiding stale Salesforce material.
 - Kept the project smaller than Apex Recipes and LWC Recipes so beginners can finish one coherent walkthrough before jumping into reference libraries.

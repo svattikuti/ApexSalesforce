@@ -183,3 +183,15 @@ Try:
 - Pick one Dreamforce or Salesforce+ session about Agentforce, Data Cloud, LWC, or secure platform development.
 - Write down one concrete exercise it suggests for this repo.
 - Prefer small exercises that strengthen fundamentals before adding brand-new platform features.
+
+## 11. Use Udemy For Extra Repetition
+
+Read:
+
+- `docs/recent-salesforce-resources.md`
+
+Try:
+
+- Search Udemy for Apex, SOQL, LWC, or Platform Developer I courses only after you have run this repo's scripts.
+- Pick courses updated in the last 12 to 18 months and verify they use current Salesforce CLI, Apex tests, SOQL relationship queries, and Lightning Web Components.
+- When a Udemy lesson conflicts with Trailhead or developer.salesforce.com, trust the official Salesforce documentation.
