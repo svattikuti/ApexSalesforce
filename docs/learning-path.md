@@ -45,19 +45,23 @@ Try:
 
 Read:
 
+- `docs/soql-guide.md`
 - `force-app/main/default/classes/PersonnelSelector.cls`
 - `scripts/apex/02_query_headcount.apex`
+- `scripts/apex/06_soql_practice.apex`
 
 Run:
 
 ```bash
 sf apex run --file scripts/apex/02_query_headcount.apex
+sf apex run --file scripts/apex/06_soql_practice.apex
 ```
 
 Try:
 
 - Add a selector method that finds personnel by clearance level.
 - Call that method from an anonymous Apex script.
+- Add a test that proves the selector returns only matching clearance levels.
 
 ## 4. Keep Business Logic In Services
 
@@ -166,3 +170,16 @@ Once the sample deploys and tests pass, add one quality tool at a time:
 - CI commands that deploy to a scratch org and run the Apex tests.
 
 Start with behavior and deployability. Tooling makes more sense after the loop is familiar.
+
+## 10. Use Dreamforce As A Compass
+
+Read:
+
+- `docs/dreamforce-learning-notes.md`
+- `docs/recent-salesforce-resources.md`
+
+Try:
+
+- Pick one Dreamforce or Salesforce+ session about Agentforce, Data Cloud, LWC, or secure platform development.
+- Write down one concrete exercise it suggests for this repo.
+- Prefer small exercises that strengthen fundamentals before adding brand-new platform features.

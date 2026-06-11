@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SOQL Guide For JavaScript And Python Developers</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #172033;
+      background: #f6f8fb;
+      line-height: 1.55;
+    }
+    .page-header {
+      background: #12395b;
+      color: #fff;
+      padding: 40px 24px;
+    }
+    .page-main {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 28px 20px 56px;
+      background: #fff;
+    }
+    h1, h2, h3 {
+      line-height: 1.2;
+    }
+    h2 {
+      margin-top: 38px;
+      padding-top: 16px;
+      border-top: 1px solid #d9e1ec;
+    }
+    code, pre {
+      font-family: "SFMono-Regular", Consolas, monospace;
+    }
+    pre {
+      overflow-x: auto;
+      padding: 14px;
+      background: #101827;
+      color: #f7fafc;
+      border-radius: 6px;
+    }
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 16px 0;
+    }
+    th, td {
+      border: 1px solid #d9e1ec;
+      padding: 9px 10px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background: #eef3f8;
+    }
+    .callout {
+      border-left: 4px solid #2f75b5;
+      background: #eef6ff;
+      padding: 12px 16px;
+      margin: 16px 0;
+    }
+    .warning {
+      border-left-color: #b25c00;
+      background: #fff7ed;
+    }
+  </style>
+</head>
+<body>
+  <div class="page-header">
+    <h1>SOQL Guide For JavaScript And Python Developers</h1>
+    <p>A project-local guide to Salesforce queries using the personnel tracker sample.</p>
+  </div>
+  <div class="page-main">
+    <h2>Mental Model</h2>
+    <p>SOQL reads Salesforce records from objects like <code>Personnel__c</code> and <code>Personnel_Assignment__c</code>. It looks familiar if you know SQL, but it follows Salesforce metadata, relationships, sharing, and governor limits.</p>
+    <table>
+      <tr><th>If you know...</th><th>Think of SOQL as...</th><th>Important difference</th></tr>
+      <tr><td>SQL</td><td><code>SELECT</code> over Salesforce objects</td><td>No arbitrary joins and no normal <code>SELECT *</code>.</td></tr>
+      <tr><td>TypeScript arrays</td><td>A server-side filter before Apex or LWC sees data</td><td>You must select every field you plan to read.</td></tr>
+      <tr><td>Python ORMs</td><td>A query layer over records</td><td>Governor limits reward querying collections once.</td></tr>
+    </table>
+
+    <h2>Where SOQL Belongs</h2>
+    <p>In this repo, selectors own SOQL, services own business behavior, and scripts or LWCs call services.</p>
+    <pre><code>LWC or script
+  -&gt; Apex controller or service
+    -&gt; selector
+      -&gt; SOQL</code></pre>
+    <div class="callout">Open <code>PersonnelSelector.cls</code> and <code>PersonnelService.cls</code> side by side. The selector describes database reads; the service describes intent.</div>
+
+    <h2>Run The Practice Script</h2>
+    <pre><code>sf apex run --file scripts/apex/01_insert_sample_personnel.apex
+sf apex run --file scripts/apex/03_create_assignments.apex
+sf apex run --file scripts/apex/06_soql_practice.apex</code></pre>
+    <p>The practice script demonstrates filters, bind variables, relationship queries, aggregate queries, and SOQL for-loops.</p>
+
+    <h2>Basic Query Shape</h2>
+    <pre><code>List&lt;Personnel__c&gt; engineers = [
+    SELECT Id, Employee_Id__c, Display_Name__c, Department__c, Role__c
+    FROM Personnel__c
+    WHERE Department__c = 'Engineering'
+        AND Status__c = 'Active'
+    ORDER BY Last_Name__c, First_Name__c
+    LIMIT 50
+];</code></pre>
+    <p>Custom objects and fields end in <code>__c</code>. Always list the fields you plan to read and add <code>ORDER BY</code> when row order matters.</p>
+
+    <h2>Bind Variables</h2>
+    <pre><code>String department = 'Engineering';
+Set&lt;String&gt; statuses = new Set&lt;String&gt;{ 'Active', 'On Leave' };
+
+List&lt;Personnel__c&gt; people = [
+    SELECT Id, Employee_Id__c, Display_Name__c, Status__c
+    FROM Personnel__c
+    WHERE Department__c = :department
+        AND Status__c IN :statuses
+];</code></pre>
+    <p>Bind variables are the Apex version of parameterized query values. Prefer them over dynamic string concatenation.</p>
+
+    <h2>Relationship Queries</h2>
+    <h3>Parent To Child</h3>
+    <pre><code>SELECT Employee_Id__c, Display_Name__c,
+    (SELECT Assignment_Name__c, Status__c FROM Assignments__r)
+FROM Personnel__c
+WHERE Employee_Id__c LIKE 'SAMPLE-%'</code></pre>
+    <h3>Child To Parent</h3>
+    <pre><code>SELECT Assignment_Name__c, Status__c, Personnel__r.Display_Name__c
+FROM Personnel_Assignment__c
+WHERE Status__c = 'Active'</code></pre>
+
+    <h2>Aggregate Queries</h2>
+    <pre><code>for (AggregateResult row : [
+    SELECT Department__c department, COUNT(Id) activePersonnel
+    FROM Personnel__c
+    WHERE Status__c = 'Active'
+    GROUP BY Department__c
+]) {
+    System.debug(row.get('department') + ': ' + row.get('activePersonnel'));
+}</code></pre>
+
+    <h2>Bulk-Safe Pattern</h2>
+    <p>Gather keys, query once, and use a map. Do not query once per record inside a loop.</p>
+    <pre><code>Set&lt;String&gt; employeeIds = new Set&lt;String&gt;();
+for (Personnel__c person : incomingPeople) {
+    employeeIds.add(person.Employee_Id__c);
+}
+
+Map&lt;String, Personnel__c&gt; existingByEmployeeId = new Map&lt;String, Personnel__c&gt;();
+for (Personnel__c existing : PersonnelSelector.selectByEmployeeIds(employeeIds)) {
+    existingByEmployeeId.put(existing.Employee_Id__c, existing);
+}</code></pre>
+
+    <h2>Security Habits</h2>
+    <table>
+      <tr><th>Concern</th><th>What it controls</th><th>Habit</th></tr>
+      <tr><td>Sharing</td><td>Which records the user can see</td><td>Use <code>with sharing</code> unless you have a deliberate reason not to.</td></tr>
+      <tr><td>CRUD/FLS</td><td>Which objects and fields the user can access</td><td>Learn user-mode operations and <code>stripInaccessible</code> before building real UI controllers.</td></tr>
+      <tr><td>Injection</td><td>Whether input can change query structure</td><td>Use inline SOQL with bind variables; whitelist dynamic query fragments.</td></tr>
+    </table>
+
+    <h2>Recent Resources Checked</h2>
+    <ul>
+      <li><a href="https://trailhead.salesforce.com/content/learn/modules/apex_database/apex_database_soql">Trailhead: Write SOQL Queries</a>, checked 2026-06-11.</li>
+      <li><a href="https://developer.salesforce.com/docs/platform/lwc/guide/apex.html">LWC Developer Guide: Call Apex Methods</a>, checked 2026-06-11.</li>
+      <li><a href="https://developer.salesforce.com/docs/platform/lwc/guide/get-started-api-versioning.html">LWC Developer Guide: API Versioning</a>, includes Winter '24 and Spring '25 versioning guidance.</li>
+      <li><a href="https://github.com/trailheadapps/apex-recipes">trailheadapps/apex-recipes</a>, pushed 2026-06-02 and updated 2026-06-07.</li>
+      <li><a href="https://github.com/trailheadapps/lwc-recipes">trailheadapps/lwc-recipes</a>, pushed 2026-06-03 and updated 2026-06-11.</li>
+    </ul>
+  </div>
+</body>
+</html>

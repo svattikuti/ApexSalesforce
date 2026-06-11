@@ -74,7 +74,7 @@
   </div>
   <div class="page-main">
     <h2>How To Use This Guide</h2>
-    <p>Work through the project in order: deploy metadata, run anonymous Apex, trace the service and selector classes, inspect the trigger path, run tests, then run Batch Apex.</p>
+    <p>Work through the project in order: deploy metadata, run anonymous Apex, trace the service and selector classes, inspect the trigger path, run tests, run Batch Apex, then study SOQL as its own skill.</p>
 
     <h2>Mental Model</h2>
     <table>
@@ -85,6 +85,7 @@
       <tr><td>Event handler</td><td><span class="path">PersonnelTriggerHandler.cls</span></td></tr>
       <tr><td>Background job</td><td><span class="path">PersonnelReviewBatch.cls</span></td></tr>
       <tr><td>Small REPL scripts</td><td><span class="path">scripts/apex/*.apex</span></td></tr>
+      <tr><td>Query guide</td><td><span class="path">docs/soql-guide.md</span>, <span class="path">docs/soql-guide.html</span></td></tr>
     </table>
 
     <h2>Setup</h2>
@@ -110,8 +111,9 @@ sf org open</code></pre>
     <p>The important point is that the script creates records, but the service owns the save behavior. The trigger still runs because DML happened.</p>
 
     <h2>3. SOQL Belongs In Selectors</h2>
-    <pre><code>sf apex run --file scripts/apex/02_query_headcount.apex</code></pre>
-    <p>Read <span class="path">PersonnelSelector.cls</span>. The selector hides query details so service methods can read like business operations.</p>
+    <pre><code>sf apex run --file scripts/apex/02_query_headcount.apex
+sf apex run --file scripts/apex/06_soql_practice.apex</code></pre>
+    <p>Read <span class="path">docs/soql-guide.md</span> and <span class="path">PersonnelSelector.cls</span>. The selector hides query details so service methods can read like business operations. The SOQL practice script demonstrates binds, relationship queries, aggregate queries, and SOQL for-loops.</p>
 
     <h2>4. Services Own Business Rules</h2>
     <pre><code>sf apex run --file scripts/apex/03_create_assignments.apex</code></pre>
@@ -132,6 +134,9 @@ sf apex run test --class-names PersonnelReviewBatchTest --result-format human --
 
     <h2>8. Guided Change</h2>
     <p>Add a rule that assignments cannot exceed 40 hours per week. Add the failing test first in <span class="path">PersonnelAssignmentServiceTest.cls</span>, then update <span class="path">PersonnelAssignmentService.cls</span>, then re-run the test.</p>
+
+    <h2>9. SOQL As A Skill</h2>
+    <p>Open <span class="path">docs/soql-guide.html</span> in a browser or read <span class="path">docs/soql-guide.md</span>. Then add a selector method that finds personnel by clearance level and call it from a new anonymous Apex script.</p>
 
     <h2>Cleanup</h2>
     <pre><code>sf apex run --file scripts/apex/99_cleanup_sample_data.apex</code></pre>

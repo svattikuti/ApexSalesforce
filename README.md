@@ -12,6 +12,10 @@ Use the walkthrough before reading files randomly:
 - [HTML walkthrough](docs/personnel-tracker-walkthrough.html)
 - [Lightning UI walkthrough](docs/lightning-ui-walkthrough.md)
 - [Lightning UI walkthrough HTML](docs/lightning-ui-walkthrough.html)
+- [SOQL guide for JavaScript and Python developers](docs/soql-guide.md)
+- [SOQL guide HTML](docs/soql-guide.html)
+- [Dreamforce learning notes](docs/dreamforce-learning-notes.md)
+- [Recent Salesforce resources](docs/recent-salesforce-resources.md)
 - [Short learning path](docs/learning-path.md)
 
 The walkthrough explains what to deploy, what to run, which files to read, and what changes to try. It also maps familiar TypeScript/Python ideas to Apex concepts such as selectors, services, triggers, DML, SOQL, Batch Apex, and Lightning Web Components.
@@ -91,6 +95,7 @@ sf apex run --file scripts/apex/01_insert_sample_personnel.apex
 sf apex run --file scripts/apex/02_query_headcount.apex
 sf apex run --file scripts/apex/03_create_assignments.apex
 sf apex run --file scripts/apex/05_run_review_batch.apex
+sf apex run --file scripts/apex/06_soql_practice.apex
 ```
 
 ## Try The Lightning UI

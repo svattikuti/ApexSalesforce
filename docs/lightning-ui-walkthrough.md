@@ -212,6 +212,7 @@ This repo currently focuses on Salesforce deployable source and Apex tests. A na
 - [Lightning Web Components Developer Guide](https://developer.salesforce.com/docs/platform/lwc/guide)
 - [Component Folder](https://developer.salesforce.com/docs/platform/lwc/guide/create-components-folder.html)
 - [XML Configuration File Elements](https://developer.salesforce.com/docs/platform/lwc/guide/reference-configuration-tags.html)
+- [API Versioning](https://developer.salesforce.com/docs/platform/lwc/guide/get-started-api-versioning.html)
 - [Call Apex Methods](https://developer.salesforce.com/docs/platform/lwc/guide/apex.html)
 - [Wire Apex Methods](https://developer.salesforce.com/docs/platform/lwc/guide/apex-wire-method.html)
 - [Call Apex Imperatively](https://developer.salesforce.com/docs/platform/lwc/guide/apex-call-imperative.html)

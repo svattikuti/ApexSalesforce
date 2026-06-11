@@ -12,6 +12,8 @@ Use this order:
 6. Run Batch Apex.
 7. Make one guided change.
 8. Add a Lightning Web Component UI.
+9. Study SOQL as its own skill.
+10. Use Dreamforce themes as a compass for what to add next.
 
 ## Mental Model
 
@@ -133,10 +135,12 @@ Run:
 
 ```bash
 sf apex run --file scripts/apex/02_query_headcount.apex
+sf apex run --file scripts/apex/06_soql_practice.apex
 ```
 
 Read:
 
+- `docs/soql-guide.md`
 - `force-app/main/default/classes/PersonnelSelector.cls`
 - `force-app/main/default/classes/PersonnelService.cls`
 
@@ -145,6 +149,8 @@ What to notice:
 - Selector methods return records and hide query details.
 - Service methods express business intent, such as `findActiveByDepartment`.
 - `summarizeActiveHeadcount` uses `AggregateResult`, which is Apex's way to work with grouped SOQL results.
+- Relationship queries use Salesforce relationship names such as `Assignments__r` and `Personnel__r`.
+- Bind variables such as `:department` keep filter values separate from query structure.
 
 Exercise:
 
@@ -356,3 +362,7 @@ Build `PersonnelSkill__c`:
 5. Add an anonymous Apex script that assigns skills to the sample personnel.
 
 That extension repeats the same pattern in a new domain, which is the fastest way to make Apex feel less mysterious.
+
+## Dreamforce Compass
+
+Dreamforce 2026 is framed around the Agentic Enterprise, with official agenda themes around Agentforce, Slack, Data 360, secure AI, and hands-on training. Do not let that pull you away from fundamentals too early. Use `docs/dreamforce-learning-notes.md` to translate conference themes into small Salesforce developer exercises.
